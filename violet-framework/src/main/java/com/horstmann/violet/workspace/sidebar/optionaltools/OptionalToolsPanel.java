@@ -30,7 +30,11 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
+import com.horstmann.violet.framework.file.TestDriver;
+import com.horstmann.violet.framework.file.IOSystem;
+import com.horstmann.violet.framework.file.Login1;
+import com.horstmann.violet.framework.file.SignUp;
+import com.horstmann.violet.framework.file.MainWindow;
 import com.horstmann.violet.framework.dialog.DialogFactory;
 import com.horstmann.violet.framework.dialog.DialogFactoryMode;
 import com.horstmann.violet.framework.injection.resources.ResourceBundleInjector;
@@ -118,7 +122,7 @@ public class OptionalToolsPanel extends JPanel implements ISideBarElement
         {
             public void actionPerformed(ActionEvent e)
             {
-                //TODO : create visualization window
+                new MainWindow();
             }
         });
         return bVisualize;

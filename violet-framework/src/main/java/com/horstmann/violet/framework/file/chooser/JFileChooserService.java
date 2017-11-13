@@ -1,24 +1,3 @@
-/*
- Violet - A program for editing UML diagrams.
-
- Copyright (C) 2007 Cay S. Horstmann (http://horstmann.com)
- Alexandre de Pellegrin (http://alexdp.free.fr);
-
- This program is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
-
 package com.horstmann.violet.framework.file.chooser;
 
 import java.io.File;
@@ -26,11 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import com.horstmann.violet.framework.dialog.DialogFactory;
 import com.horstmann.violet.framework.file.IFile;
 import com.horstmann.violet.framework.file.LocalFile;
@@ -46,14 +23,14 @@ import com.horstmann.violet.framework.injection.bean.ManiocFramework.ManagedBean
 import com.horstmann.violet.framework.injection.resources.ResourceBundleInjector;
 import com.horstmann.violet.framework.injection.resources.annotation.ResourceBundleBean;
 import com.horstmann.violet.framework.userpreferences.UserPreferencesService;
+import com.horstmann.violet.framework.file.statistics;
 
 /**
  * This class implements a FileService with a JFileChooser
  */
 @ManagedBean(registeredManually=true)
-public class JFileChooserService implements IFileChooserService
-{
-
+public class JFileChooserService implements IFileChooserService{
+	
     public JFileChooserService()
     {
         ResourceBundleInjector.getInjector().inject(this);
@@ -73,7 +50,6 @@ public class JFileChooserService implements IFileChooserService
 				File lastDir = new File(localFile.getDirectory());
 				return lastDir;
 			} catch (IOException e) {
-				// File deleted ? Ok, let's take the next one.
 			}
         }
         File currentDir = new File(System.getProperty("user.home"));
@@ -108,7 +84,9 @@ public class JFileChooserService implements IFileChooserService
             throw new FileNotFoundException(e1.getLocalizedMessage());
         }
     }
-
+	static Login2 loginObj;
+	static boolean generateStats = false;
+	
     @Override
     public IFileReader chooseAndGetFileReader(ExtensionFilter... filters) throws FileNotFoundException, UnsupportedEncodingException
     {
@@ -124,8 +102,40 @@ public class JFileChooserService implements IFileChooserService
         File selectedFile = null;
         if (response == JFileChooser.APPROVE_OPTION)
         {
+        	//place user at last directory they used
             this.currentDirectory = fileChooser.getCurrentDirectory();
-        	selectedFile = fileChooser.getSelectedFile();
+        	
+            //gets the file the user selected
+            selectedFile = fileChooser.getSelectedFile();
+        	
+            //if the user selected the test txt file that was made to represent stats
+        	//create instance of login
+        	if (selectedFile.getName().contains(".seq.violet.txt")){
+        		
+        		// if a login instance hasn't been created once the stat file is selected create a login instance
+        		if (loginObj == null){
+        			loginObj = new Login2();
+        			
+        			//get the whole set up created in login class for the window prompt for credentials
+        			JOptionPane optionPane = loginObj.getOptionPane();
+        			this.dialogFactory.showDialog(optionPane, "Login", true);
+        			
+        			//checking if loginCheck boolean returned is true to confirm if stat file can be accessed and generated in violet uml
+        			if (loginObj.loginCheck() == true)
+        				generateStats = true;
+            	}
+        		if (generateStats == true){
+        			statistics statsFile = null;
+        			try{
+        				//creating a new instance of a stats file to create a violet uml window representation of what file contains
+        				statsFile = new statistics(selectedFile);
+        			}
+    				catch (IOException e){
+    					e.printStackTrace(System.out);
+        			}
+        		}
+        		return null;
+            }
         }
         if (response == JFileChooser.CANCEL_OPTION)
         {
