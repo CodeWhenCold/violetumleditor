@@ -108,9 +108,9 @@ public class JFileChooserService implements IFileChooserService{
             //gets the file the user selected
             selectedFile = fileChooser.getSelectedFile();
         	
-            //if the user selected the test txt file that was made to represent stats
+            //if the user selected the testxml file that was made to represent stats
         	//create instance of login
-        	if (selectedFile.getName().contains(".seq.violet.txt")){
+        	if (selectedFile.getName().contains(".seq.violet.xml")){
         		
         		// if a login instance hasn't been created once the stat file is selected create a login instance
         		if (loginObj == null){

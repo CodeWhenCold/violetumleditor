@@ -111,6 +111,26 @@ public class SequenceDiagramGraph extends AbstractGraph implements StatisticalGr
     	return violations;
     }
     
+
+    private List<String> getTooManyIncommingMessages() {
+    	List<String> violations = new ArrayList<>();
+    	Collection<INode> nodes = getAllNodes();
+    	
+    	for (INode node : nodes) {
+    		if (node instanceof LifelineNode) {
+    			LifelineNode lln = (LifelineNode)node;
+    			List<INode> children = lln.getChildren();
+        		if (children != null) {
+        			if (children.size() >= 5) {
+        				violations.add("Maybe use the controller GRASP pattern for " + lln.getName());
+        			}
+        		}
+    		}
+    		
+    	}
+  
+		return violations;
+	}
     
     public List<String> getEmptyActivationBar() {
     	List<String> violations = new ArrayList<>();
@@ -262,6 +282,8 @@ public Statistics countIncomingMessagesPerObject() {
 		
 		violations.addAll(getUselessReturnMessage());
 		violations.addAll(getEmptyActivationBar());
+		violations.addAll(getTooManyIncommingMessages());
+		
 		
 		evaluateStatistics();
 		
