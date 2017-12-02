@@ -111,30 +111,10 @@ public class SequenceDiagramGraph extends AbstractGraph implements StatisticalGr
     	return violations;
     }
     
-
-    private List<String> getTooManyIncommingMessages() {
-    	List<String> violations = new ArrayList<>();
-    	Collection<INode> nodes = getAllNodes();
-    	
-    	for (INode node : nodes) {
-    		if (node instanceof LifelineNode) {
-    			LifelineNode lln = (LifelineNode)node;
-    			List<INode> children = lln.getChildren();
-        		if (children != null) {
-        			if (children.size() >= 5) {
-        				violations.add("Maybe use the controller GRASP pattern for " + lln.getName());
-        			}
-        		}
-    		}
-    		
-    	}
-  
-		return violations;
-	}
     
     public List<String> getEmptyActivationBar() {
     	List<String> violations = new ArrayList<>();
-    	
+    
     	Collection<INode> nodes = getAllNodes();
     	for (INode node : nodes) {
     		if (node instanceof LifelineNode) {
@@ -154,8 +134,29 @@ public class SequenceDiagramGraph extends AbstractGraph implements StatisticalGr
     	return violations;
     }
     
-    
    
+    public List<String> SuggestGraspPattern() {
+    	List<String> violations = new ArrayList<>();
+    	//counter keeps track of how many connected edges have been established (i.e. inputs)
+    	int inputCount=0;
+    	Collection<INode> nodes = getAllNodes();
+    	for (INode node : nodes) {
+    		if (node instanceof LifelineNode) {
+    			LifelineNode lln = (LifelineNode) node;
+    			
+    			// List of children
+    			List<INode> children = lln.getChildren();
+    			for (INode child : children){
+    				ActivationBarNode aBar = (ActivationBarNode) child;
+    				if (aBar.getConnectedEdges().size() >= 5) {
+    					violations.add("Suggestion: Use the controller GRASP pattern. You have more than 5 inputs on an Ob!");
+    				}
+    				inputCount++; 
+    			}
+    		}
+    	}
+    	return violations;
+    }
     
     public Statistics countOutgoingMessagesPerObject() {
     	
@@ -282,7 +283,7 @@ public Statistics countIncomingMessagesPerObject() {
 		
 		violations.addAll(getUselessReturnMessage());
 		violations.addAll(getEmptyActivationBar());
-		violations.addAll(getTooManyIncommingMessages());
+		violations.addAll(SuggestGraspPattern());
 		
 		
 		evaluateStatistics();
