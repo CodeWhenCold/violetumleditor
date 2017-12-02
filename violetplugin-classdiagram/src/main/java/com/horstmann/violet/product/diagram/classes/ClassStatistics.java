@@ -41,10 +41,10 @@ import com.horstmann.violet.product.diagram.property.text.LineText;
 
 		@Override
 		public String toString() {
-			return ("Name of Class: " + this.getNameOfClass() + "   Size of Class: " + this.getSize() );
+			return ("Name of Class: " + this.getNameOfClass() + " Size of Class: " + this.getSize() );
 		}
 		public String toStringCouple() {
-			return ("Name of Class: " + this.getNameOfClass() + "   CBO: " + this.getSize() );
+			return ("Name of Class: " + this.getNameOfClass() + " CBO: " + this.getSize() );
 		}
 
 

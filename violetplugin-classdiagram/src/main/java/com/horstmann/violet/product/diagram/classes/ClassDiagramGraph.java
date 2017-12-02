@@ -162,7 +162,7 @@ public class ClassDiagramGraph extends AbstractGraph implements StatisticalGraph
 	
 public void writeStats() throws IOException{
     	
-    	File file = new File("StatisticsCM.txt");
+    	File file = new File("ClassModelStatistics/Diagram.txt");
         if (!file.exists()) {
             file.createNewFile();
         }
@@ -175,7 +175,7 @@ public void writeStats() throws IOException{
         bw.newLine();
        
         
-        bw.write("Names of Classes: ");
+        bw.write("Name of Classes: ");
         for (int i = 0; i < getNamesOfClasses().size(); i++) {
             bw.write(getNamesOfClasses().get(i).toString() + " ");
         }
@@ -183,13 +183,13 @@ public void writeStats() throws IOException{
         bw.newLine();
         
         
-        bw.write("Number of Relationships between Classes and Interfaces: ");
+        bw.write("Number of RelationShips between Classes and Interfaces: ");
         bw.write(Integer.toString(getNumOfRelationships()));
         bw.newLine();
         bw.newLine();
         
         
-        bw.write("Size of Classes in terms of functions: ");
+        bw.write("Class sizes in terms of functions per class: ");
         bw.newLine();
         for(int i=0; i<sizeOfClasses().size(); i++){
         	bw.write(sizeOfClasses().get(i).toString());
@@ -197,7 +197,7 @@ public void writeStats() throws IOException{
         }
         
         bw.newLine();
-        bw.write("Coupling between objects: ");
+        bw.write("Coupling Between objects: ");
         bw.newLine();
         for(int i=0; i<cbo().size(); i++){
         	bw.write(cbo().get(i).toStringCouple());
