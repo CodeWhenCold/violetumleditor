@@ -123,6 +123,13 @@ public class OptionalToolsPanel extends JPanel implements ISideBarElement
             public void actionPerformed(ActionEvent e)
             {
                 //TODO : create visualization window
+            	
+            	// Export Statistics
+            	IGraph graph = diagramPanel.getGraphFile().getGraph();
+            	if (graph instanceof StatisticalGraph) {
+            		((StatisticalGraph)graph).evaluateStatistics();
+            	}
+            	
             	new MainWindow();
             }
         });

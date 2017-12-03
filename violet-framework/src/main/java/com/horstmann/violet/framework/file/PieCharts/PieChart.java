@@ -1,4 +1,5 @@
 package com.horstmann.violet.framework.file.PieCharts;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -38,7 +39,8 @@ public class PieChart {
 		}
 		else
 		{
-			directoryAndFile = "SequenceModelStatistics\\" + fileName;
+			directoryAndFile = "SequenceModelStatistics" + File.separator + fileName;
+			System.out.println(directoryAndFile);
 			read_Sequencefile(directoryAndFile);
 		}
 			
@@ -104,15 +106,13 @@ public void read_Sequencefile(String fileName){
 				}
 				++count;
 			}
+			sc.close();	
 		
 		}catch(FileNotFoundException ex){
 			System.out.println("File unable to open"+ fileName);
 		}catch(IOException e){
 			System.out.println("Error: An Error has occured to read file" + fileName);
-		}finally{
-			sc.close();	
 		}
-	
 }
 
 

@@ -27,7 +27,7 @@ public class SequenceStatisticsUI {
 	
 	public SequenceStatisticsUI(String filename)
 	{
-		file = new File("SequenceModelStatistics\\" + filename);
+		file = new File("SequenceModelStatistics"+ File.separator + filename);
 		if(!file.exists())
 		{
 			JFrame error = new JFrame("Error");

@@ -22,6 +22,7 @@
 package com.horstmann.violet.product.diagram.sequence;
 
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -58,7 +59,10 @@ public class SequenceDiagramGraph extends AbstractGraph implements StatisticalGr
         if (foundNode == null && newNode.getClass().isAssignableFrom(ActivationBarNode.class)) {
             return false;
         }
-        return super.addNode(newNode, p);
+        boolean add = super.addNode(newNode, p);
+        evaluateStatistics();
+        return add;
+        
     }
 
     public List<INode> getNodePrototypes() {
@@ -225,7 +229,7 @@ public Statistics countIncomingMessagesPerObject() {
 		// Create TextFile
 		PrintWriter writer;
 		try {
-			writer = new PrintWriter("statistics.txt", "UTF-8");
+			writer = new PrintWriter("SequenceModelStatistics" + File.separator + "Diagram.txt", "UTF-8");
 			
 			// Write Names of Objects
 			for (String name : outgoing.getSectorNames()) {
@@ -242,7 +246,7 @@ public Statistics countIncomingMessagesPerObject() {
 			}
 			writer.println();
 			
-			// Write outgoing Messages
+			// Write incoming Messages
 			for (int number : incoming.getSectorSizes()) {
 				writer.print(number + " ");
 			}
