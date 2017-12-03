@@ -70,6 +70,36 @@ public class SequenceDiagramGraph extends AbstractGraph implements StatisticalGr
         return EDGE_PROTOTYPES;
     }
     
+    public List<String> suggestGraspPattern() {
+        List<String> violations = new ArrayList<>();
+        Collection<INode> nodes = getAllNodes();
+        for (INode node : nodes) {
+            if (node instanceof LifelineNode) {
+                LifelineNode lln = (LifelineNode) node;
+                // Count number of messages outgoing this node
+                int count = 0;
+                // List of children
+                List<INode> children = lln.getChildren();
+                for (INode child : children){
+                    ActivationBarNode aBar = (ActivationBarNode) child;
+                    // Loop over outgoing messages
+                    for (IEdge edge : aBar.getConnectedEdges()) {
+                         if (edge instanceof CallEdge && edge.getStartNode() == child) {
+                             count++;
+                         }
+                     }
+                }
+                if (count >= 5) {
+                    // Suggest Controller
+                    String objName = lln.getName().toString();
+                    if (objName.isEmpty()) objName = UNNAMED_OBJECT;
+                    violations.add("Suggestion: Use the Controller GRASP Pattern on " + objName + ". It has 5 or more call messages.");
+                }
+            }
+        }
+        return violations;
+    }
+    
     public List<String> getUselessReturnMessage() {
     	
     	List<String> violations = new ArrayList<>();
@@ -271,9 +301,8 @@ public Statistics countIncomingMessagesPerObject() {
 		
 		violations.addAll(getUselessReturnMessage());
 		violations.addAll(getEmptyActivationBar());
-		
-		evaluateStatistics();
-		
+		violations.addAll(suggestGraspPattern());
+				
 		return violations;
 	}
 
