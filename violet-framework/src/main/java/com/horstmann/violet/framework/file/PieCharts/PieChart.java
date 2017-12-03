@@ -34,7 +34,7 @@ public class PieChart {
 		
 		if(diagramType == "ClassModel")
 		{
-			directoryAndFile = "ClassModelStatistics\\" + fileName;
+			directoryAndFile = "ClassModelStatistics" + File.separator + fileName;
 			read_ClassModelFile(directoryAndFile);
 		}
 		else

@@ -24,21 +24,16 @@ package com.horstmann.violet.workspace.sidebar.optionaltools;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.horstmann.violet.framework.dialog.DialogFactory;
-import com.horstmann.violet.framework.dialog.DialogFactoryMode;
+import com.horstmann.violet.framework.file.MainWindow;
 import com.horstmann.violet.framework.injection.resources.ResourceBundleInjector;
 import com.horstmann.violet.framework.injection.resources.annotation.ResourceBundleBean;
-import com.horstmann.violet.framework.file.IOSystem;
-import com.horstmann.violet.framework.file.Login;
-import com.horstmann.violet.framework.file.SignUp;
-import com.horstmann.violet.framework.file.MainWindow;
 import com.horstmann.violet.framework.util.Warnings;
 import com.horstmann.violet.product.diagram.abstracts.IGraph;
 import com.horstmann.violet.product.diagram.abstracts.StatisticalGraph;
@@ -129,6 +124,16 @@ public class OptionalToolsPanel extends JPanel implements ISideBarElement
             	if (graph instanceof StatisticalGraph) {
             		((StatisticalGraph)graph).evaluateStatistics();
             	}
+            	
+            	// Check Users Files
+            	try {
+	            	File file = new File("Users and Passwords.txt");
+	            	if (!file.exists()) {
+	            		file.createNewFile();
+	            	}
+            	} catch (Exception ex) {
+					System.err.println(ex);
+				}
             	
             	new MainWindow();
             }

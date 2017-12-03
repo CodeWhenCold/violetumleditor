@@ -18,7 +18,7 @@ public class ClassModelStatisticsUI {
 	
 	public ClassModelStatisticsUI(String filename) 
 	{
-		file = new File("ClassModelStatistics\\" + filename);
+		file = new File("ClassModelStatistics" + File.separator + filename);
 		if(!file.exists())
 		{
 			JFrame error = new JFrame("Error");
