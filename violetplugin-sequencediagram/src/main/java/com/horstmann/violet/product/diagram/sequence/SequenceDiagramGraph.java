@@ -22,8 +22,10 @@
 package com.horstmann.violet.product.diagram.sequence;
 
 import java.awt.geom.Point2D;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -263,30 +265,47 @@ public Statistics countIncomingMessagesPerObject() {
 		
 		// Create TextFile
 		PrintWriter writer;
+		
 		try {
-			writer = new PrintWriter("SequenceModelStatistics" + File.separator + "Diagram.txt", "UTF-8");
+		
+			File dir = new File(STATISTICS_DIRECTORY);
+			File file = new File(STATISTICS_FILE);
+			
+			if (!dir.exists()) {
+				dir.mkdir();
+			}
+			
+	        if (!file.exists()) {
+	            file.createNewFile();
+	        }
+	        FileWriter fw = new FileWriter(file);
+	        BufferedWriter bw = new BufferedWriter(fw);
+        
+   
 			
 			// Write Names of Objects
 			for (String name : outgoing.getSectorNames()) {
-				writer.print(name + " ");
+				bw.write(name + " ");
 			}
-			writer.println();
+			bw.newLine();
 			
 			// Write Number of Objects
-			writer.println(outgoing.getSectorNames().size());
+			bw.write(outgoing.getSectorNames().size() + "");
+			bw.newLine();
 			
 			// Write outgoing Messages
 			for (int number : outgoing.getSectorSizes()) {
-				writer.print(number + " ");
+				bw.write(number + " ");
 			}
-			writer.println();
+			bw.newLine();
 			
 			// Write incoming Messages
 			for (int number : incoming.getSectorSizes()) {
-				writer.print(number + " ");
+				bw.write(number + " ");
 			}
-			writer.println();			
-			writer.close();
+			bw.newLine();		
+			bw.flush();
+			bw.close();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -321,6 +340,8 @@ public Statistics countIncomingMessagesPerObject() {
             new NoteEdge()
     ));
     
-    private static final String UNNAMED_OBJECT = "<unnamed object>";
+    private static final String UNNAMED_OBJECT = "<Unnamed Object>";
+    private static final String STATISTICS_DIRECTORY = "SequenceModelStatistics";
+    private static final String STATISTICS_FILE = STATISTICS_DIRECTORY + File.separator + "Diagram.txt";
     
 }
