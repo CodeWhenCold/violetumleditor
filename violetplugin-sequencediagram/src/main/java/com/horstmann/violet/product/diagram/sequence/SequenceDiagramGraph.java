@@ -59,10 +59,7 @@ public class SequenceDiagramGraph extends AbstractGraph implements StatisticalGr
         if (foundNode == null && newNode.getClass().isAssignableFrom(ActivationBarNode.class)) {
             return false;
         }
-        boolean add = super.addNode(newNode, p);
-        evaluateStatistics();
-        return add;
-        
+        return super.addNode(newNode, p);
     }
 
     public List<INode> getNodePrototypes() {
@@ -100,8 +97,10 @@ public class SequenceDiagramGraph extends AbstractGraph implements StatisticalGr
     							}
     							if (!hasCallMessage) {
     								String sourceName = ((LifelineNode)source.getParent()).getName().toString();
+    								if (sourceName.isEmpty()) sourceName = UNNAMED_OBJECT;
     								ActivationBarNode destination = (ActivationBarNode)edge.getEndNode();
     								String destName = ((LifelineNode)destination.getParent()).getName().toString();
+    								if (destName.isEmpty()) destName = UNNAMED_OBJECT;
     								violations.add("Return message from " + sourceName +  " to " + destName + " without a call message."); 
     							}
     						}
@@ -129,7 +128,9 @@ public class SequenceDiagramGraph extends AbstractGraph implements StatisticalGr
     			for (INode child : children) {
     				ActivationBarNode actBar = (ActivationBarNode) child;
     				if (actBar.getConnectedEdges().size() == 0) {
-    					violations.add("Empty Activation Bar in " + concept.getName());
+    					String conceptName = concept.getName().toString();
+    					if (conceptName.isEmpty()) conceptName = UNNAMED_OBJECT;
+    					violations.add("Empty Activation Bar in " + conceptName);
     				}
     			}
     		}
@@ -169,7 +170,9 @@ public class SequenceDiagramGraph extends AbstractGraph implements StatisticalGr
     			}
     			
     			// add the information to the lists
-    			objectNames.add(concept.getName().toString());
+    			String conceptName = concept.getName().toString();
+    			if (conceptName.isEmpty()) conceptName = UNNAMED_OBJECT;
+    			objectNames.add(conceptName);
     			numOfMessages.add(msgCounter);
     		}
     	}
@@ -207,7 +210,9 @@ public Statistics countIncomingMessagesPerObject() {
     				}
     			}
     			// add the information to the lists
-    			objectNames.add(concept.getName().toString());
+    			String conceptName = concept.getName().toString();
+    			if (conceptName.isEmpty()) conceptName = UNNAMED_OBJECT;
+    			objectNames.add(conceptName);
     			numOfMessages.add(msgCounter);
     		}
     	}
@@ -286,5 +291,7 @@ public Statistics countIncomingMessagesPerObject() {
             new ReturnEdge(),
             new NoteEdge()
     ));
+    
+    private static final String UNNAMED_OBJECT = "<unnamed object>";
     
 }
