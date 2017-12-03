@@ -162,7 +162,7 @@ public class ClassDiagramGraph extends AbstractGraph implements StatisticalGraph
 	
 public void writeStats() throws IOException{
     	
-    	File file = new File("ClassModelStatistics/Diagram.txt");
+    	File file = new File("ClassModelStatistics" + File.separator + "Diagram.txt");
         if (!file.exists()) {
             file.createNewFile();
         }
