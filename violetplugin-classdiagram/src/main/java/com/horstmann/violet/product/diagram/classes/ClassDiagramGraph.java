@@ -26,6 +26,11 @@ import com.horstmann.violet.product.diagram.property.text.LineText;
 public class ClassDiagramGraph extends AbstractGraph implements StatisticalGraph{
 	
 	public void evaluateStatistics() {
+		try {
+      		writeStats();
+      	} catch (IOException e1) {
+      		e1.printStackTrace();
+      	}
 		
 	}
 	public List<String> evaluateViolations(){
@@ -79,6 +84,7 @@ public class ClassDiagramGraph extends AbstractGraph implements StatisticalGraph
 		}
 		return violations;
 	}
+	
 
 	/**
 	 * Check for bi-directional aggregation/composition relationships between class nodes and warn the user 

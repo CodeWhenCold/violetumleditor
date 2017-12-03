@@ -352,17 +352,6 @@ public class FileMenu extends JMenu
                     IGraphFile graphFile = workspace.getGraphFile();
                     if (graphFile.getGraph() instanceof ClassDiagramGraph) {
 	                  	ClassDiagramGraph graph = (ClassDiagramGraph)graphFile.getGraph();
-	                  	
-	                  	
-	                  	try {
-	                  		graph.writeStats();
-	                  	} catch (IOException e1) {
-	                  		// TODO Auto-generated catch block
-	                  		e1.printStackTrace();
-	                  	}
-	                  	
-	                  	
-
 	                  }
 
                     graphFile.save();
